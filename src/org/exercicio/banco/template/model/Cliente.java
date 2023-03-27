@@ -1,12 +1,11 @@
 package org.exercicio.banco.template.model;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
 *
-* Nome:
-* Curso:
-* Matrícula:
+*Nome:Tiago da conceicao pessoa de fraga Curso:TSI Matrícula:20221TSIIG0120
 * 
 */
 public class Cliente {
@@ -31,7 +30,13 @@ public class Cliente {
      * @param c
      */
     public void adicionarConta(ContaBancaria c) {
-
+    	
+    		if (contas.contains(c)) {
+    			System.out.print("A conta jah estah associada a este cliente.");
+    		}else {
+    			this.contas.add(c);
+    			System.out.print("Conta adicionada com sucesso!");
+    		}
     }
 
     
@@ -46,6 +51,12 @@ public class Cliente {
      */
     public void removerConta(ContaBancaria c) {
 
+    	if(contas.contains(c)) {
+    		this.contas.remove(c) ;
+    		System.out.print("Conta removida com sucesso!");
+    	} else {
+    		System.out.print("A conta nao esta associada a este cliente.");
+    	}
     }
 
     /**
@@ -59,7 +70,17 @@ public class Cliente {
      * @return
      */
     public ContaBancaria localizarContaNumero(int numero) {
-        return null;
+
+		for (int i = 0; i < contas.size(); i++) {
+			ContaBancaria c = contas.get(i);
+
+			if (c.getNumeroConta() == numero) {
+				System.out.print("Conta encontrada!");
+				return c;
+			}
+		}
+		System.out.print("Conta nao encontrada.");
+		return null;
     }
 
     
@@ -74,7 +95,16 @@ public class Cliente {
      * @return
      */
     public boolean localizarConta(ContaBancaria c) {
-        return false;
+    	
+		int index = contas.indexOf(c);
+		
+		if (index != -1) {
+			
+			System.out.print("Conta encontrada!");
+			return true;
+		}
+			System.out.print("Conta nao encontrada.");
+			return false;
     }
 
     /**
@@ -86,8 +116,21 @@ public class Cliente {
      * @return
      */
     public double balancoEntreContas() {
-        return 0.0;
+    	
+		double ValorSaldo = 0.0;
+		for (int i = 0; i < contas.size(); i++) {
+			ContaBancaria c = contas.get(i);
+			ValorSaldo += c.getSaldo();
+		}
+
+		System.out.print("Balanco entre contas: RS" + ValorSaldo );
+		return ValorSaldo;
     }
+    
+    
+    
+    
+    
     
     public ArrayList<ContaBancaria> getContas() {
 		return contas;
@@ -96,8 +139,30 @@ public class Cliente {
     public void setContas(ArrayList<ContaBancaria> contas) {
 		this.contas = contas;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(contas, cpf, nome);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cliente other = (Cliente) obj;
+		return Objects.equals(contas, other.contas) && Objects.equals(cpf, other.cpf)
+				&& Objects.equals(nome, other.nome);
+	}
+
+	@Override
+	public String toString() {
+		return "Cliente [nome=" + nome + ", cpf=" + cpf + ", contas=" + contas + "]";
+	}
       
     // getters e setters omitidos
     
 }
-
